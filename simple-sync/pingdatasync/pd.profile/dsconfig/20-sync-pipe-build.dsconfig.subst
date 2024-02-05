@@ -11,7 +11,7 @@ dsconfig create-external-server \
 	--set server-host-name:${PD_ENGINE_PRIVATE_HOSTNAME} \
     --set server-port:${PD_ENGINE_PRIVATE_PORT_LDAPS} \
 	--set bind-dn:cn=sync \
-    --set "password:AABkwRkIRfApR+R1uZPSciaUPmtEtTzjC/4=" \
+    --set "password:${PINTDIRECTORY_PASSWORD}" \
     --set authorization-method:none \
     --set location:${LOCATION} \
     --set connection-security:ssl \
@@ -19,17 +19,6 @@ dsconfig create-external-server \
     --set 'trust-manager-provider:Blind Trust' \
 	--set initial-connections:1 \
 	--set max-connections:4
-
-dsconfig create-external-server \
-    --server-name postgres  \
-    --type jdbc  \
-    --set jdbc-driver-type:postgres  \
-    --set jdbc-driver-url:jdbc:postgresql://postgres:5432/postgres  \
-    --set database-name:postgres  \
-    --set server-host-name:postgres  \
-    --set server-port:5432  \
-    --set user-name:postgres  \
-    --set password:AABWNBQZPZm/WHhald/1G4iB 
 
 dsconfig create-sync-source \
     --source-name pingdirectory_source  \
@@ -44,24 +33,12 @@ dsconfig create-sync-destination \
 	--set base-dn:ou=destination,${USER_BASE_DN} \
 	--set server:pingdirectory
 
-dsconfig create-sync-destination \
-    --destination-name postgres  \
-    --type third-party-jdbc  \
-    --set server:postgres  \
-    --set extension-class:com.volvocars.jdbcsync.demo.SimpleJDBCSyncDestination 
-
 dsconfig create-sync-pipe \
     --pipe-name pingdirectory_source-to-pingdirectory_destination  \
     --set sync-source:pingdirectory_source  \
     --set sync-destination:pingdirectory_destination  \
     --set "change-detection-polling-interval:500 ms"  \
     --set num-worker-threads:1
-
-dsconfig create-sync-pipe \
-    --pipe-name pingdirectory-postgres  \
-    --set started:true  \
-    --set sync-source:pingdirectory_source  \
-    --set sync-destination:postgres
 
 dsconfig create-dn-map \
     --map-name source_to_destination  \
