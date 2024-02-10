@@ -26,11 +26,6 @@ done
 echo "PingDirectory - ${PD_ENGINE_PRIVATE_HOSTNAME}:${PD_ENGINE_PRIVATE_PORT_LDAPS} appears available"
 sleep 2
 
-echo "Adding Postgres JDBC Driver added into java propeties"
-sed -i '/^  -Djava.security.egd=file:\/dev\/\.\/urandom/i\  -Djdbc.drivers=org.postgresql.Driver \\' ${SERVER_ROOT_DIR}/config/java.properties
-"${SERVER_ROOT_DIR}/bin/dsjavaproperties"
-echo "Postgres JDBC Driver added"
-
 source ${SERVER_ROOT_DIR}/bin/secrets-parser "${SERVER_ROOT_DIR}/config/secrets.properties"
 
 dsconfig create-external-server \
