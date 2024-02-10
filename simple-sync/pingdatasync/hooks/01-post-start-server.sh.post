@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-${VERBOSE} && set -x
-
-FILE="/opt/out/instance/secrets/pingdirectory_password.txt"
-
-file_contents=$(<"FILE")
-
-export PINTDIRECTORY_PASSWORD="$file_contents"

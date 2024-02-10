@@ -26,17 +26,57 @@ done
 echo "PingDirectory - ${PD_ENGINE_PRIVATE_HOSTNAME}:${PD_ENGINE_PRIVATE_PORT_LDAPS} appears available"
 sleep 2
 
+echo "Adding Postgres JDBC Driver added into java propeties"
+sed -i '/^  -Djava.security.egd=file:\/dev\/\.\/urandom/i\  -Djdbc.drivers=org.postgresql.Driver \\' ${SERVER_ROOT_DIR}/config/java.properties
+"${SERVER_ROOT_DIR}/bin/dsjavaproperties"
+echo "Postgres JDBC Driver added"
+
+source ${SERVER_ROOT_DIR}/bin/secrets-parser "${SERVER_ROOT_DIR}/config/secrets.properties"
+
+dsconfig create-external-server \
+    --server-name postgres  \
+    --type jdbc  \
+    --set jdbc-driver-type:postgres  \
+    --set jdbc-driver-url:jdbc:postgresql://postgres:5432/postgres  \
+    --set database-name:postgres  \
+    --set server-host-name:postgres  \
+    --set server-port:5432  \
+    --set user-name:postgres  \
+    --set password:$POSTGRES_PASSWORD \
+    --no-prompt
+
+dsconfig create-sync-destination \
+    --destination-name postgres  \
+    --type third-party-jdbc  \
+    --set server:postgres  \
+    --set extension-class:SimpleJDBCSyncDestination \
+    --no-prompt
+
+dsconfig create-sync-pipe \
+    --pipe-name pingdirectory-postgres  \
+    --set sync-source:pingdirectory_source  \
+    --set sync-destination:postgres \
+    --no-prompt
+
+dsconfig create-sync-class \
+    --pipe-name pingdirectory-postgres  \
+    --class-name person  \
+    --set auto-mapped-source-attribute:-all- \
+    --no-prompt
+
 #
 # Set the sync pipe at the beginning of the changelog
 #
 realtime-sync set-startpoint \
     --end-of-changelog \
-    --pipe-name pingdirectory_source-to-pingdirectory_destination
+    --pipe-name pingdirectory-postgres
 
 #
 # Enable the sync pipe
 #
 dsconfig set-sync-pipe-prop \
-    --pipe-name pingdirectory_source-to-pingdirectory_destination  \
+    --pipe-name pingdirectory-postgres  \
     --set started:true \
     --no-prompt
+
+resync -p pingdirectory-postgres
