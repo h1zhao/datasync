@@ -26,7 +26,7 @@ done
 echo "PingDirectory - ${PD_ENGINE_PRIVATE_HOSTNAME}:${PD_ENGINE_PRIVATE_PORT_LDAPS} appears available"
 sleep 2
 
-source ${SERVER_ROOT_DIR}/bin/secrets-parser "${SERVER_ROOT_DIR}/config/secrets.properties"
+# source ${SERVER_ROOT_DIR}/bin/secrets-parser "${SERVER_ROOT_DIR}/config/secrets.properties"
 
 dsconfig create-external-server \
     --server-name postgres  \
@@ -37,7 +37,7 @@ dsconfig create-external-server \
     --set server-host-name:postgres  \
     --set server-port:5432  \
     --set user-name:postgres  \
-    --set password:$POSTGRES_PASSWORD \
+    --set password:AAAZkmNjuFvXFHb9OHmDoYoG \
     --no-prompt
 
 dsconfig create-sync-destination \
