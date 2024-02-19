@@ -44,7 +44,7 @@ dsconfig create-sync-destination \
     --destination-name postgres  \
     --type third-party-jdbc  \
     --set server:postgres  \
-    --set extension-class:SimpleJDBCSyncDestination \
+    --set extension-class:com.volvocars.conncar.pingdatasync.postgres.PostgresSyncDestination \
     --no-prompt
 
 dsconfig create-sync-pipe \
