@@ -82,14 +82,14 @@ dsconfig create-sync-pipe \
     --set sync-source:bisync-postgres  \
     --set sync-destination:pingdirectory_destination \
     --no-prompt
-
-dsconfig set-sync-pipe-prop \
-    --pipe-name pingdirectory-postgres  \
-    --set started:true \
-    --no-prompt
 #
 dsconfig set-sync-pipe-prop \
     --pipe-name bisync-postgres-pingdirectory  \
+    --set started:true \
+    --no-prompt
+
+dsconfig set-sync-pipe-prop \
+    --pipe-name pingdirectory-postgres  \
     --set started:true \
     --no-prompt
 
