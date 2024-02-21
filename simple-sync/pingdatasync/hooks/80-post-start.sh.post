@@ -90,7 +90,8 @@ dsconfig create-sync-class \
     --set include-base-dn:ou=people,ou=source,dc=example,dc=com  \
     --set "include-filter:(objectClass=person)"  \
     --set creates-as-modifies:true \
-    --set auto-mapped-source-attribute:objectClass
+    --set auto-mapped-source-attribute:objectClass \
+    --no-prompt
 
 #
 dsconfig set-sync-pipe-prop \
@@ -108,5 +109,9 @@ dsconfig set-sync-pipe-prop \
 realtime-sync set-startpoint \
     --end-of-changelog \
     --pipe-name pingdirectory-postgres
+
+realtime-sync set-startpoint \
+    --beginning-of-changelog \
+    --pipe-name bisync-postgres-pingdirectory
 
 resync -p pingdirectory-postgres
