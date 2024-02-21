@@ -44,7 +44,7 @@ dsconfig create-sync-destination \
     --destination-name postgres  \
     --type third-party-jdbc  \
     --set server:postgres  \
-    --set extension-class:com.volvocars.conncar.pingdatasync.postgres.PostgresSyncDestination \
+    --set extension-class:SimpleJDBCSyncDestination \
     --no-prompt
 
 dsconfig create-sync-pipe \
@@ -67,18 +67,21 @@ dsconfig create-sync-source \
     --set server:postgres  \
     --set database-entry-type:person  \
     --set extension-class:SimpleJDBCSyncSource \
-    --set ignore-changes-by-user:syncuser
+    --set ignore-changes-by-user:syncuser \
+    --no-prompt
 
 dsconfig create-sync-destination \
     --destination-name pingdirectory_destination  \
     --type ping-identity  \
     --set base-dn:ou=people,ou=source,dc=example,dc=com  \
-    --set server:pingdirectory
+    --set server:pingdirectory \
+    --no-prompt
 
 dsconfig create-sync-pipe \
     --pipe-name bisync-postgres-pingdirectory  \
     --set sync-source:bisync-postgres  \
-    --set sync-destination:pingdirectory_destination
+    --set sync-destination:pingdirectory_destination \
+    --no-prompt
 
 dsconfig set-sync-pipe-prop \
     --pipe-name pingdirectory-postgres  \
