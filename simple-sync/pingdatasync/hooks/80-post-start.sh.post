@@ -83,6 +83,11 @@ dsconfig create-sync-pipe \
     --set sync-destination:pingdirectory_destination \
     --no-prompt
 
+dsconfig create-dn-map \
+    --map-name source_to_destination  \
+    --set 'from-dn-pattern:**,ou=destination,dc=example,dc=com'  \
+    --set "to-dn-pattern:{1},ou=destination,dc=example,dc=com"
+
 dsconfig create-sync-class \
     --pipe-name bisync-postgres-pingdirectory  \
     --class-name bisync_postgres_pingdirectory_person  \
