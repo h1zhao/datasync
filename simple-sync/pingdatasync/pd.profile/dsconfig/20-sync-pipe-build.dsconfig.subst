@@ -23,7 +23,7 @@ dsconfig create-external-server \
 dsconfig create-sync-source \
     --source-name pingdirectory_source  \
     --type ping-identity  \
-    --set base-dn:ou=source,${USER_BASE_DN}  \
+    --set base-dn:ou=people,ou=source,${USER_BASE_DN}  \
     --set server:pingdirectory  \
     --set use-changelog-batch-request:true \
     --set ignore-changes-by-dn:cn=sync
