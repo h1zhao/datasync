@@ -36,7 +36,7 @@ dsconfig create-external-server \
     --set database-name:postgres  \
     --set server-host-name:postgres  \
     --set server-port:5432  \
-    --set user-name:postgres  \
+    --set user-name:syncuser  \
     --set password:AAAZkmNjuFvXFHb9OHmDoYoG \
     --no-prompt
 
@@ -60,19 +60,40 @@ dsconfig create-sync-class \
     --set "include-filter:(objectClass=person)"  \
     --set auto-mapped-source-attribute:-all- \
     --no-prompt
+
+dsconfig create-sync-source \
+    --source-name bisync-postgres  \
+    --type third-party-jdbc  \
+    --set server:postgres  \
+    --set database-entry-type:person  \
+    --set extension-class:SimpleJDBCSyncSource \
+    --set ignore-changes-by-user:syncuser
+
+dsconfig create-sync-destination \
+    --destination-name pingdirectory_destination  \
+    --type ping-identity  \
+    --set base-dn:ou=people,ou=source,dc=example,dc=com  \
+    --set server:pingdirectory
+
+dsconfig create-sync-pipe \
+    --pipe-name bisync-postgres-pingdirectory  \
+    --set sync-source:bisync-postgres  \
+    --set sync-destination:pingdirectory_destination
+
+dsconfig set-sync-pipe-prop \
+    --pipe-name pingdirectory-postgres  \
+    --set started:true \
+    --no-prompt
 #
+dsconfig set-sync-pipe-prop \
+    --pipe-name bisync-postgres-pingdirectory  \
+    --set started:true \
+    --no-prompt
+
 # Set the sync pipe at the beginning of the changelog
 #
 realtime-sync set-startpoint \
     --end-of-changelog \
     --pipe-name pingdirectory-postgres
-
-#
-# Enable the sync pipe
-#
-dsconfig set-sync-pipe-prop \
-    --pipe-name pingdirectory-postgres  \
-    --set started:true \
-    --no-prompt
 
 resync -p pingdirectory-postgres
