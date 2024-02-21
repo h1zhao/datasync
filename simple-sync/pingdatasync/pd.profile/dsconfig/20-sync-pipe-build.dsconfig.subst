@@ -31,7 +31,7 @@ dsconfig create-sync-source \
 dsconfig create-sync-destination \
 	--destination-name pingdirectory_destination \
 	--type ping-identity \
-	--set base-dn:ou=destination,${USER_BASE_DN} \
+	--set base-dn:ou=people,ou=destination,${USER_BASE_DN} \
 	--set server:pingdirectory
 
 dsconfig create-sync-pipe \
