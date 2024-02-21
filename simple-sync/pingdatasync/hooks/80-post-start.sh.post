@@ -90,7 +90,7 @@ dsconfig create-sync-class \
     --set include-base-dn:ou=people,ou=source,dc=example,dc=com  \
     --set "include-filter:(objectClass=person)"  \
     --set creates-as-modifies:true \
-    --set auto-mapped-source-attribute:objectClass \
+    --set auto-mapped-source-attribute:-all- \
     --no-prompt
 
 #
