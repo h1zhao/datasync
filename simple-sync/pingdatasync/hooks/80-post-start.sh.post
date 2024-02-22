@@ -26,19 +26,13 @@ done
 echo "PingDirectory - ${PD_ENGINE_PRIVATE_HOSTNAME}:${PD_ENGINE_PRIVATE_PORT_LDAPS} appears available"
 sleep 2
 
-# source ${SERVER_ROOT_DIR}/bin/secrets-parser "${SERVER_ROOT_DIR}/config/secrets.properties"
 
-#
+realtime-sync set-startpoint \
+    --end-of-changelog \
+    --pipe-name pingdirectory-postgres
 
-
-# Set the sync pipe at the beginning of the changelog
-#
-#realtime-sync set-startpoint \
-#    --end-of-changelog \
-#    --pipe-name pingdirectory-postgres
-
-#realtime-sync set-startpoint \
-#    --beginning-of-changelog \
-#    --pipe-name bisync-postgres-pingdirectory
+realtime-sync set-startpoint \
+    --beginning-of-changelog \
+    --pipe-name bisync-postgres-pingdirectory
 
 resync -p pingdirectory-postgres
