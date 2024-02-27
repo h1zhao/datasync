@@ -152,13 +152,3 @@ dsconfig set-sync-pipe-prop \
 #    --set sync-destination:pingdirectory_destination  \
 #    --set "change-detection-polling-interval:500 ms"  \
 #    --set num-worker-threads:1
-
-realtime-sync set-startpoint \
-    --end-of-changelog \
-    --pipe-name pingdirectory-postgres
-
-realtime-sync set-startpoint \
-    --beginning-of-changelog \
-    --pipe-name bisync-postgres-pingdirectory
-
-resync -p pingdirectory-postgres
